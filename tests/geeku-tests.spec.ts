@@ -1,15 +1,5 @@
 import { test, expect } from '@playwright/test';
 test.describe('to do list',function(){
-    test('adding an item to the list', async function({page}) {
-        await page.goto('https://demo.playwright.dev/todomvc')
-        const todo = page.locator('input.new-todo') 
-        await todo.fill('salt')
-        await todo.press('Enter')
-        await todo.fill('pepper')   
-        await todo.press('Enter')      
-
-    })
-
     test('adding an item to the todo list should create a new todo list item', async function({ page }) {
         // open the browser to the web page
         // input class new-todo
