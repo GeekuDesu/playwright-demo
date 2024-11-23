@@ -31,13 +31,10 @@ test.describe('to do list',function(){
         // complete the item by clicking the check mark
         const firsttogtodo = page.getByTestId('todo-item').nth(0)
         await firsttogtodo.getByRole('checkbox').check()
-        await page.pause()
         await expect(firsttogtodo).toHaveClass('completed')
-        await page.pause()
         // get the "X items left" element
         const itemCount = page.locator('.todo-count')
         await expect(itemCount).toContainText('0 items left')
-        await page.pause()
         // validate the text value of that element
       })
 
