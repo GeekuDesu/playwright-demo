@@ -23,7 +23,7 @@ test.describe('to do list',function(){
         
     })
 
-    test('clicking the checkmark next to a list item reduces the items left value to 0', async function({ page }) {
+    test.only('clicking the checkmark next to a list item reduces the items left value to 0', async function({ page }) {
         await page.goto('https://demo.playwright.dev/todomvc')
         const todo = page.locator('input.new-todo')
         await todo.fill('hello')
@@ -34,12 +34,14 @@ test.describe('to do list',function(){
         await page.pause()
         await expect(firsttogtodo).toHaveClass('completed')
         await page.pause()
-
         // get the "X items left" element
+        const itemCount = page.locator('.todo-count')
+        await expect(itemCount).toContainText('0 items left')
+        await page.pause()
         // validate the text value of that element
       })
 
-    test.only('Show items selected via filter', async function ({ page }) {
+    test('Show items selected via filter', async function ({ page }) {
         await page.goto('https://demo.playwright.dev/todomvc')
         const todo = page.locator('input.new-todo')
         await todo.fill('staying out the way')
