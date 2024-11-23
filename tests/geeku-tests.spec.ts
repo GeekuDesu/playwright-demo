@@ -23,7 +23,7 @@ test.describe('to do list',function(){
         
     })
 
-    test.only('clicking the checkmark next to a list item reduces the items left value to 0', async function({ page }) {
+    test('clicking the checkmark next to a list item reduces the items left value to 0', async function({ page }) {
         await page.goto('https://demo.playwright.dev/todomvc')
         const todo = page.locator('input.new-todo')
         await todo.fill('hello')
