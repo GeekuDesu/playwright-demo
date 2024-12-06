@@ -45,7 +45,7 @@ test.describe('to do list',function(){
         // validate the text value of that element
     })
     
-    test.only('Show items selected via filter', async function ({ page }) {
+    test('Show items selected via filter', async function ({ page }) {
         await page.pause()
         await createListItem(page, 'stayin out the way')
         await page.pause()
@@ -65,13 +65,28 @@ test.describe('to do list',function(){
         await expect(completedLink).toHaveClass('selected')
     })
 
-    test('Check all Button', async function ({ page }) {
+    test.only('Check all Button', async function ({ page }) {
         const checkAll = page.getByLabel('Mark all as complete')
         await createListItem(page, 'stayin out the way')
         await createListItem(page, 'nah forreal')
         await checkAll.check()
+        // assert everything is complete
         await page.pause()
         await checkAll.uncheck()
+        // assert everything is not complete
         await page.pause()
+    })
+
+    test.only('clear completed Button', async function ({ page }) {
+        const checkAll = page.getByLabel('Mark all as complete')
+        await createListItem(page, 'stayin out the way')
+        await createListItem(page, 'nah forreal')
+        await checkAll.check()
+        // get clear all button
+        // click it
+        // get all list  items
+        // assert list items is empty
+        const listItems = [] // .all()
+        expect(listItems.length).toBe(0)
     })
 })
