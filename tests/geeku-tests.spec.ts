@@ -39,14 +39,17 @@ test.describe('to do list',function(){
     test('Show items selected via filter', async function ({ page }) {
         await createListItem(page, 'stayin out the way')
         await createListItem(page, 'nah forreal')
-        const firstTogToDo = page.getByTestId('todo-item').nth(0)
-        await firstTogToDo.getByRole('checkbox').check()      
-        await expect(firstTogToDo).toHaveClass('completed')
-        const secTogToDo = page.getByTestId('todo-item').nth(1)
-        await secTogToDo.getByRole('checkbox').check()      
-        await expect(secTogToDo).toHaveClass('completed')
-        await expect(firstTogToDo).toHaveClass('completed');
-        await expect(secTogToDo).toHaveClass('completed');
+
+        const todoList = page.getByTestId('todo-item').all()
+        let todoItem = todoList[0]
+        let toggle  = todoItem.getByRole('checkbox')
+        await toggle.check()
+        await expect(todoItem).toHaveClass('completed')
+        todoItem = todoList[1]
+        toggle  = todoItem.getByRole('checkbox')
+        await toggle.check()
+        await expect(todoItem).toHaveClass('completed')
+
         const activeLink = page.getByRole('link', {name: 'Active'})
         const completedLink = page.getByRole('link', {name: 'Completed'})
         await activeLink.click()
