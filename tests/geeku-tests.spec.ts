@@ -51,7 +51,7 @@ test.describe('to do list',function(){
         await page.pause()
         await createListItem(page, 'nah forreal')
         await page.pause()
-        const todoList = page.getByTestId('todo-item').all()
+        const todoList = await page.getByTestId('todo-item').all()
         await completeItem(todoList[0])
         await page.pause()
         await completeItem(todoList[1])
