@@ -1,5 +1,9 @@
-import { test, expect } from '@playwright/test';
-
+import { test, expect, Locator } from '@playwright/test';
+async function completeItem(item: Locator){
+        let toggle  = item.getByRole('checkbox')
+        await toggle.check()
+        await expect(item).toHaveClass('completed')
+    }
 async function createListItem (page, text){
     const toDo = page.locator('input.new-todo')
     await toDo.fill(text)
@@ -36,20 +40,18 @@ test.describe('to do list',function(){
         await expect(itemCount).toContainText('0 items left')
         // validate the text value of that element
     })
-    test('Show items selected via filter', async function ({ page }) {
+    
+    test.only('Show items selected via filter', async function ({ page }) {
+        await page.pause()
         await createListItem(page, 'stayin out the way')
+        await page.pause()
         await createListItem(page, 'nah forreal')
-
+        await page.pause()
         const todoList = page.getByTestId('todo-item').all()
-        let todoItem = todoList[0]
-        let toggle  = todoItem.getByRole('checkbox')
-        await toggle.check()
-        await expect(todoItem).toHaveClass('completed')
-        todoItem = todoList[1]
-        toggle  = todoItem.getByRole('checkbox')
-        await toggle.check()
-        await expect(todoItem).toHaveClass('completed')
-
+        await completeItem(todoList[0])
+        await page.pause()
+        await completeItem(todoList[1])
+        await page.pause()
         const activeLink = page.getByRole('link', {name: 'Active'})
         const completedLink = page.getByRole('link', {name: 'Completed'})
         await activeLink.click()
@@ -57,7 +59,7 @@ test.describe('to do list',function(){
         await completedLink.click()
         await expect(completedLink).toHaveClass('selected')
     })
-    test.only('Check all Button', async function ({ page }) {
+    test('Check all Button', async function ({ page }) {
         const checkAll = page.getByLabel('Mark all as complete')
         await createListItem(page, 'stayin out the way')
         await createListItem(page, 'nah forreal')
