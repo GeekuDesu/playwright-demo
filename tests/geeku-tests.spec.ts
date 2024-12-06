@@ -36,9 +36,7 @@ test.describe('to do list',function(){
     test('clicking the checkmark next to a list item reduces the items left value to 0', async function({ page }) {
         await createListItem(page, 'Hello')
         // complete the item by clicking the check mark
-        const firstTogToDo = page.getByTestId('todo-item').nth(0)
-        await firstTogToDo.getByRole('checkbox').check()
-        await expect(firstTogToDo).toHaveClass('completed')
+        await completeItem(page.getByTestId('todo-item').nth(0))
         // get the "X items left" element
         const itemCount = page.locator('.todo-count')
         await expect(itemCount).toContainText('0 items left')
@@ -65,17 +63,22 @@ test.describe('to do list',function(){
 
     test.only('Check all Button', async function ({ page }) {
         const checkAll = page.getByLabel('Mark all as complete')
-        await createListItem(page, 'stayin out the way')
-        await createListItem(page, 'nah forreal')
+        const list = ['a','b','c','d','e','f']
+        for(const item of list){
+            await createListItem(page, item)
+        }
         await checkAll.check()
-        // assert everything is complete
-        await page.pause()
+        const allItems = await page.getByTestId('todo-item').all()
+        for(const item of allItems){
+            await expect(item).toHaveClass('completed')
+        }
         await checkAll.uncheck()
-        // assert everything is not complete
-        await page.pause()
+        for(const l of allItems){
+            await expect(l).not.toHaveClass('completed')
+        }
     })
 
-    test.only('clear completed Button', async function ({ page }) {
+    test('clear completed Button', async function ({ page }) {
         const checkAll = page.getByLabel('Mark all as complete')
         await createListItem(page, 'stayin out the way')
         await createListItem(page, 'nah forreal')
