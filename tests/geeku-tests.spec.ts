@@ -46,23 +46,21 @@ test.describe('to do list',function(){
     })
     
     test.only('Show items selected via filter', async function ({ page }) {
-        await page.pause()
         await createListItem(page, 'stayin out the way')
-        await page.pause()
         await createListItem(page, 'nah forreal')
-        await page.pause()
+
         const todoList = await page.getByTestId('todo-item').all()
         await completeItem(todoList[0])
-        await page.pause()
-        await completeItem(todoList[1])
-        await page.pause()
 
         const activeLink = page.getByRole('link', {name: 'Active'})
-        const completedLink = page.getByRole('link', {name: 'Completed'})
         await activeLink.click()
         await expect(activeLink).toHaveClass('selected')
+        await expect(todoList[0]).toContainText('nah forreal')
+
+        const completedLink = page.getByRole('link', {name: 'Completed'})
         await completedLink.click()
         await expect(completedLink).toHaveClass('selected')
+        await expect(todoList[0]).toContainText('stayin out the way')
     })
 
     test('Check all Button', async function ({ page }) {
